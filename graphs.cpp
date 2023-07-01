@@ -85,8 +85,11 @@ public:
 
     }
 
+    ~Graph() = default; 
+
     void print() {
         for (int i = 0; i < size; i++) {
+            cout << "Node " << i << ": ";
             for (int j = 0; j < size; j++)
                 cout << matrix[i][j] << " ";
             cout << endl;
@@ -104,6 +107,10 @@ public:
         size++;
     }
     void removeNode(int numberOfNode) {
+        if(numberOfNode < 0 && numberOfNode >= size) {
+            cout << "Cannot delete\n";
+            return;
+        }
         for (int i = 0; i < size; i++) {
             remove(matrix[i], numberOfNode);
 
@@ -113,13 +120,13 @@ public:
     }
 
     void addEdge(int from, int to) {
-        if (from < size && to < size && from != to)
+        if (from < size && to < size && from != to && from >= 0 && to >= 0)
             matrix[from][to] = true;
         else
             cout << "Cannot add this Edge\n";
     }
     void removeEdge(int from, int to) {
-        if (from < size && to < size && from != to)
+        if (from < size && to < size && from != to && from >= 0 && to >= 0)
             matrix[from][to] = false;
         else
             cout << "Cannot delete this Edge\n";
@@ -156,7 +163,7 @@ public:
             }
         }
 
-        // Step 2: Reverse the graph
+        // Step 2: Reverse  && from < size && to < sizethe graph
         vector<vector<bool>> reversedGraph(size, vector<bool>(size, false));
         reverseGraph(reversedGraph);
 
@@ -177,11 +184,12 @@ public:
     void dfs(int node) {
         vector<bool> visited(size, false);
         if (node < size && node >= 0) {
+            cout << "DFS: ";
             dfsSCC(node, visited, matrix);
             cout << endl;
         }
         else {
-            cout << "Illegal Node\n";
+            cout << "Forbiden Node\n";
         }
     }
 };
@@ -189,7 +197,6 @@ public:
 int main() {
     Graph gr = Graph("text.txt");
     gr.print();
-    gr.dfs(0);
     gr.kosarajuAlgorithm();
     return 0;
 }
